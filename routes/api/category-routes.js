@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const { Category, Product } = require("../../models");
+// const { associations } = require("../../models/Product");
 
 // The `/api/categories` endpoint
 // Using try catch to catch errors in this route
@@ -8,11 +9,9 @@ router.get("/", async (req, res) => {
   // find all categories
   try {
     const categoryData = await Category.findAll({
-      include: [
-        // be sure to include its associated Products
-        { model: Product },
-      ],
+      include: [{ model: Product, as: "products" }],
     });
+    console.log(categoryData);
     res.status(200).json(categoryData);
   } catch (err) {
     res.status(500).json(err);
