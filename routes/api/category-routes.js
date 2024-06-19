@@ -21,8 +21,9 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-  // find one category by its `id` value
+  // Using Try catch to catch errors in this route
   try {
+    // find one category by its `id` value
     const categoryId = await Category.findOne({
       where: { id: req.params.id },
       // be sure to include its associated Products
