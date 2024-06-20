@@ -50,8 +50,31 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:id", (req, res) => {
-  // update a category by its `id` value
+router.put("/:id", async (req, res) => {
+  // Use try catch to catch any errors in this route
+  try {
+    // find a category by its `id` value
+    const category = await Category.findOne({
+      where: { id: req.params.id },
+    });
+    // Test to see if there is a category
+    if (!category) {
+      return res
+        .status(404)
+        .json({ message: "No category found with this id!" });
+    }
+    // update a category by its `id` value
+
+    const updateCategory = await Category.update(req.body, {
+      where: { id: req.params.id },
+    });
+
+    console.log(updateCategory);
+    res.status(200).json(updateCategory);
+  } catch (err) {
+    res.status(500).json(err);
+    console.log(err);
+  }
 });
 
 router.delete("/:id", (req, res) => {
