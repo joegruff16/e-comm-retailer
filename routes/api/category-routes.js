@@ -65,12 +65,21 @@ router.put("/:id", async (req, res) => {
     }
     // update a category by its `id` value
 
-    const updateCategory = await Category.update(req.body, {
+    await Category.update(
+      { ...req.body },
+      {
+        where: { id: req.params.id },
+        returning: true, // return the updated category data
+        plain: true,
+      }
+    );
+    // We need ot fetch the updated category with it's associated products
+    const updatedCategory = await Category.findOne({
       where: { id: req.params.id },
+      include: [{ model: Product, as: "products" }],
     });
-
-    console.log(updateCategory);
-    res.status(200).json(updateCategory);
+    console.log(updatedCategory);
+    res.status(200).json(updatedCategory);
   } catch (err) {
     res.status(500).json(err);
     console.log(err);
