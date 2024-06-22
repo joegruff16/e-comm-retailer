@@ -50,40 +50,14 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
-  // Use try catch to catch any errors in this route
-  try {
-    // find a category by its `id` value
-    const category = await Category.findOne({
-      where: { id: req.params.id },
+router.put("/:id", (req, res) => {
+  Category.update(req.body, {
+    where: { id: req.params.id },
+  })
+    .then((updatedCategory) => res.status(200).json(updatedCategory))
+    .catch((err) => {
+      res.status(500).json(err);
     });
-    // Test to see if there is a category
-    if (!category) {
-      return res
-        .status(404)
-        .json({ message: "No category found with this id!" });
-    }
-    // update a category by its `id` value
-
-    await Category.update(
-      { ...req.body },
-      {
-        where: { id: req.params.id },
-        returning: true, // return the updated category data
-        plain: true,
-      }
-    );
-    // We need ot fetch the updated category with it's associated products
-    const updatedCategory = await Category.findOne({
-      where: { id: req.params.id },
-      include: [{ model: Product, as: "products" }],
-    });
-    console.log(updatedCategory);
-    res.status(200).json(updatedCategory);
-  } catch (err) {
-    res.status(500).json(err);
-    console.log(err);
-  }
 });
 
 router.delete("/:id", (req, res) => {
