@@ -20,7 +20,7 @@ This app allows you to customize the database of your personal e-commerce store.
 
 ## Video Link
 
-<>
+<https://drive.google.com/file/d/1YF6kaQ1wJBCs6DGTA4FNfM6AkumU9rz4/view?usp=sharing>
 
 ## GitHub Repo
 
